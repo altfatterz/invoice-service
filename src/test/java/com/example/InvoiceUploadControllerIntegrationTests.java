@@ -22,9 +22,9 @@ public class InvoiceUploadControllerIntegrationTests {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    public void uploadSuccess() {
+    public void uploadSuccessPdf() {
         LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        parameters.add("files", new ClassPathResource("invoice.txt"));
+        parameters.add("files", new ClassPathResource("invoice.pdf"));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -39,7 +39,7 @@ public class InvoiceUploadControllerIntegrationTests {
     @Test
     public void uploadFailed() {
         LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        parameters.add("files", new ClassPathResource("invoice-pdf.txt"));
+        parameters.add("files", new ClassPathResource("invoice.txt"));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -49,7 +49,7 @@ public class InvoiceUploadControllerIntegrationTests {
         ResponseEntity<ErrorResponse> response = testRestTemplate.postForEntity("/invoices", entity, ErrorResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(response.getBody().getMessage()).isEqualTo("the file content is not in sync with the file extension");
+        assertThat(response.getBody().getMessage()).isEqualTo("only [image/jpeg, image/jpg, application/pdf] are allowed");
         assertThat(response.getBody().getError()).isEqualTo("Bad Request");
         assertThat(response.getBody().getStatus()).isEqualTo("400");
         assertThat(response.getBody().getPath()).isEqualTo("/invoices");
