@@ -2,3 +2,8 @@ spring:
   application:
     name: invoice-service
 
+  # defaults
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 10MB
