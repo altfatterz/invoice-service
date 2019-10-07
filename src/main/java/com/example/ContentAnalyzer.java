@@ -2,6 +2,7 @@ package com.example;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
+import org.apache.tika.exception.EncryptedDocumentException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +28,12 @@ class ContentAnalyzer {
                         declaredContentType, detectedContentType, multipartFile.getOriginalFilename());
                 throw new InvoiceUploadException("the file content is not in sync with the file extension");
             }
+
+            tika.parse(multipartFile.getInputStream()).read();
         } catch (IOException e) {
+            if (e.getCause() instanceof EncryptedDocumentException) {
+                throw new InvoiceUploadException("document encrypted");
+            }
             throw new InvoiceUploadException("the file upload stream could not be read");
         }
     }
