@@ -49,7 +49,8 @@ public class InvoiceUploadControllerIntegrationTests {
         ResponseEntity<ErrorResponse> response = testRestTemplate.postForEntity("/invoices", entity, ErrorResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(response.getBody().getMessage()).isEqualTo("only [image/jpeg, image/jpg, application/pdf] are allowed");
+        assertThat(response.getBody().getError_code()).isEqualTo("INVOICE_UPLOAD_ERROR");
+        assertThat(response.getBody().getMessage()).isEqualTo("the file upload stream could not be read");
         assertThat(response.getBody().getError()).isEqualTo("Bad Request");
         assertThat(response.getBody().getStatus()).isEqualTo("400");
         assertThat(response.getBody().getPath()).isEqualTo("/invoices");
@@ -57,6 +58,7 @@ public class InvoiceUploadControllerIntegrationTests {
 
     @Getter
     static class ErrorResponse {
+        private String error_code;
         private String error;
         private String message;
         private String status;
