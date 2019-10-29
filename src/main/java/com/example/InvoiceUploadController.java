@@ -3,6 +3,7 @@ package com.example;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,11 +24,12 @@ class InvoiceUploadController {
     }
 
     @PostMapping("/invoices")
-    public void upload(List<MultipartFile> files) {
+    public void upload(List<MultipartFile> files, @RequestParam(required = false) String source) {
         // validate the upload
         files.forEach(multipartFile -> invoiceUploadContentAnalyzer.analyze(multipartFile));
         log.info("upload success with {} nr. of files", files.size());
 
+        log.info("source:{}", InvoiceSource.of(source));
         // business logic
     }
 

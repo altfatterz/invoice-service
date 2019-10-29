@@ -28,7 +28,7 @@ public class InvoiceUploadContentAnalyzerTests {
     @Test
     public void analyzeSuccess() throws IOException {
         MockMultipartFile file = new MockMultipartFile("hello.pdf", "", "application/pdf",
-                new ClassPathResource("invoice.pdf").getInputStream());
+                new ClassPathResource("invoice1.pdf").getInputStream());
         invoiceUploadContentAnalyzer.analyze(file);
     }
 }

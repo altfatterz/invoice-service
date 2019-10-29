@@ -24,7 +24,7 @@ public class InvoiceUploadControllerIntegrationTests {
     @Test
     public void uploadSuccessPdf() {
         LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        parameters.add("files", new ClassPathResource("invoice.pdf"));
+        parameters.add("files", new ClassPathResource("invoice1.pdf"));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
